@@ -2,7 +2,7 @@
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 
-def stardogLocation = "/home/ajb/tools/stardog/stardog-1.1/lib"
+def stardogLocation = "/path/stardog/stardog-1.1/lib"
 
 repositories {
 	mavenLocal()
@@ -12,7 +12,7 @@ repositories {
 dependencies {
 	groovy group: 'org.codehaus.groovy', name: 'groovy', version: '1.8.6'
     testCompile group: 'junit', name: 'junit', version: '4.+'
-	// gremlin in stardog/lib comes with groovy, we don't want to pick that up for gradle
+	// cxf in stardog/lib contains an incompatible asm, we don't want to pick that up for gradle
 	compile fileTree(dir: stardogLocation, include: '**/*.jar', exclude: '**/*asm-2.2.3.jar')
 
 }

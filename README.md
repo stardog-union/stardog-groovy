@@ -14,7 +14,7 @@ This bindings provides a similar set of functionality to the Stardog Spring proj
 
 To run the queries, Stardog Groovy uses standard Groovy patterns, such as passing in a closure to iterate over result sets.  In many ways, it is similar to Groovy SPARQL, the SQL bindings in Groovy, etc.
 
-These bindings also interoperate with Stardog Spring and can be configured with the DataSource, making [Grails](http://grails.org) integraiton easier.
+These bindings also integrate with [Stardog Spring](https://github.com/clarkparsia/stardog-spring) and can be configured with the DataSource, making [Grails](http://grails.org) integration easier.
 
 ## Examples ##
 

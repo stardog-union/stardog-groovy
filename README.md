@@ -56,5 +56,5 @@ All tests should pass.
 
 ## NOTE ##
 
-This framework is in continuous development, please check the [issues](https://github.com/clarkparsia/stardog.js/issues) page. You're welcome to contribute.
+This framework is in continuous development, please check the [issues](https://github.com/clarkparsia/stardog-groovy/issues) page. You're welcome to contribute.
 

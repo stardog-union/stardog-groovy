@@ -2,7 +2,7 @@
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 
-def stardogLocation = "/path/stardog/stardog-1.1/lib"
+def stardogLocation = "/home/ajb/tools/stardog/stardog-1.1/lib"
 
 repositories {
 	mavenLocal()

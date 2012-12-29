@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **0.1**_ 
+_Current Version **0.2**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -26,7 +26,17 @@ Collect query results via a closure
 
 	def list = []
 	stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
-	// list has the two rows added to it
+	// list has the two Sesame BindingSet's added to it, ie TupleQueryResult.next called per each run on the closure
+
+Collect query results via projected result values
+
+    stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", {
+       println x // whatever x is bound to in the result set
+       println y // ..
+       println z // 
+    }
+
+Like query, this is executed over each TupleQueryResult
 
 Insert multidimensional arrays, single triples also works
 
@@ -53,6 +63,8 @@ You can then build the project
 That will run all the JUnit tests and create the jar in build/libs.  The test case does reference stardog.home, so you may want to change TestStardog.groovy
 
 All tests should pass. 
+
+As of Stardog-Groovy 0.2, the jar is now built with Groovy 2.0.6 as a dependency
 
 ## NOTE ##
 

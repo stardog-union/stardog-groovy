@@ -190,7 +190,40 @@ class Stardog {
 			dataSource.releaseConnection(con)
 		}
 	}
+	
+	/**
+	 * <code>each</code>
+	 * iterates over a Binding result
+	 * @param queryString
+	 * @param closure with each SPARQL query bound into the closure
+	 */
+	public void each(String queryString, Closure c) {
+		Connection con = dataSource.getConnection()
+		TupleQueryResult result = null;
+		try {
+			Query query = con.query(queryString);
+			result = query.executeSelect();
+			while (result.hasNext()) {
+				def bs = result.next()
+				def input = result.next().iterator().collectEntries( {
+					[ (it.getName()) : (it.getValue()) ]
+				})
+				// binds the Sesame result set as a map into the closure so SPARQL variables
+				// become closure native variables, e.g. "x"
+				c.delegate = input
+				c.call();
+			}
 
+			result.close();
+
+
+		} catch (Exception e) {
+			throw new RuntimeException(e)
+		} finally {
+			dataSource.releaseConnection(con)
+		}
+	}
+	
 	/**
 	 * <code>insert</code>
 	 * Inserts either a single list, or a list of lists of triples

@@ -80,6 +80,23 @@ SELECT ?s ?p ?o
 		stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
 		assertTrue(list.size == 2)
 	}
+	
+	@Test
+	public void testEach() {
+		assertNotNull(stardog)
+		def a 
+		def b
+		def c
+		stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { 
+			a = x
+			b = y
+			c = z
+
+		} )
+		assertTrue(a.stringValue().equals("urn:test1"))
+		assertTrue(b.stringValue().equals("urn:test:predicate"))
+		assertTrue(c.stringValue().equals("hello world"))
+	}
 
 	@Test
 	public void testInsertRemove() {

@@ -204,7 +204,6 @@ class Stardog {
 			Query query = con.query(queryString);
 			result = query.executeSelect();
 			while (result.hasNext()) {
-				def bs = result.next()
 				def input = result.next().iterator().collectEntries( {
 					[ (it.getName()) : (it.getValue()) ]
 				})

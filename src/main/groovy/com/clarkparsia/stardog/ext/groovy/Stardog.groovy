@@ -226,7 +226,8 @@ class Stardog {
 	/**
 	 * <code>insert</code>
 	 * Inserts either a single list, or a list of lists of triples
-	 * assumes URIImpl(s,p) and LiteralImpl(o)  
+	 * assumes URIImpl(s,p)
+	 * assumes LiteralImpl(o) unless a java.net.URI is passed in, in which case it will insert a URIImpl  
 	 * @param arr lists
 	 */
 	public void insert(List arr) {
@@ -244,15 +245,24 @@ class Stardog {
 							def s = arr2[0]
 							def p = arr2[1]
 							def o = arr2[2]
-
-							graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+							if (o.class == java.net.URI.class) {
+								graph.add(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString()))
+							}
+							else {
+								graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+							}
 						}
 					}
 				} else {
 					def s = arr[0]
 					def p = arr[1]
 					def o = arr[2]
-					graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+					if (o.class == java.net.URI.class) {
+						graph.add(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString()))
+					}
+					else {
+						graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+					}
 				}
 			}
 			adder.graph(graph);

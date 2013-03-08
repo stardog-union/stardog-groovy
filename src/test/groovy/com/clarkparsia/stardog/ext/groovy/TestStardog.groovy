@@ -106,4 +106,19 @@ SELECT ?s ?p ?o
 		stardog.remove(["urn:test3", "urn:test:predicate", "hello world"])
 		stardog.remove(["urn:test4", "urn:test:predicate", "hello world2"])
 	}
+	
+	@Test
+	public void testURIInserts() {
+		assertNotNull(stardog)
+		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
+			["urn:test2", "urn:test:predicate", new java.net.URI("http://www.clarkparsia.com")]])
+		stardog.each("select ?s ?p ?o {?s ?p ?o} LIMIT 2", {
+			if (o.stringValue().equals("http://www.clarkparsia.com")) {
+				assertEquals(o.class, org.openrdf.model.impl.URIImpl.class)
+			}
+			else {
+				assertEquals(o.class, org.openrdf.model.impl.LiteralImpl.class)
+			}
+		} )
+	}
 }

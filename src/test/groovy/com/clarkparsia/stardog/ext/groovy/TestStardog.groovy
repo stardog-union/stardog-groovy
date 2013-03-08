@@ -108,17 +108,17 @@ SELECT ?s ?p ?o
 	}
 	
 	@Test
-	public void testURIInserts() {
+	public void testURIInsertRemove() {
 		assertNotNull(stardog)
+		def list = []
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 			["urn:test2", "urn:test:predicate", new java.net.URI("http://www.clarkparsia.com")]])
-		stardog.each("select ?s ?p ?o {?s ?p ?o} LIMIT 2", {
-			if (o.stringValue().equals("http://www.clarkparsia.com")) {
-				assertEquals(o.class, org.openrdf.model.impl.URIImpl.class)
-			}
-			else {
-				assertEquals(o.class, org.openrdf.model.impl.LiteralImpl.class)
-			}
-		} )
+		stardog.query("select ?s ?p {?s ?p <http://www.clarkparsia.com> }", { list << it })
+		assertEquals(list.size(), 1)
+		list.clear()
+		stardog.remove(["urn:test2", "urn:test:predicate", new java.net.URI("http://www.clarkparsia.com")])
+		stardog.query("select ?s ?p {?s ?p <http://www.clarkparsia.com> }", { list << it })
+		assertEquals(list.size(), 0)
+		list.clear()
 	}
 }

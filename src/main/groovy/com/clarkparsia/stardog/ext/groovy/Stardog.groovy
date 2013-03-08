@@ -306,7 +306,12 @@ class Stardog {
 
 		Value objectValue = null;
 		if (object != null) {
-			objectValue = TypeConverter.asLiteral(object);
+			if (object.class == java.net.URI.class) {
+				objectValue = new URIImpl(object.toString())
+			}
+			else {
+				objectValue = TypeConverter.asLiteral(object);
+			}
 		}
 
 		try {

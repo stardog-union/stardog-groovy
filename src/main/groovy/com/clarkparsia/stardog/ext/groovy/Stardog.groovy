@@ -41,7 +41,7 @@ import com.clarkparsia.stardog.api.ConnectionConfiguration;
 import com.clarkparsia.stardog.api.ConnectionPool;
 import com.clarkparsia.stardog.api.ConnectionPoolConfig;
 import com.clarkparsia.stardog.reasoning.ReasoningType;
-import com.clarkparsia.stardog.security.SecurityUtil;
+
 import com.clarkparsia.stardog.StardogException;
 import com.clarkparsia.stardog.api.Adder;
 import com.clarkparsia.stardog.api.Connection;

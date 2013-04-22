@@ -35,7 +35,7 @@ class TestStardog {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		stardog = new Stardog([embedded:true, createIfNotPresent:true, home:"/opt/stardog", to:"testgroovy", username:"admin", password:"admin"])
+		stardog = new Stardog([embedded:true, createIfNotPresent:true, to:"testgroovy", username:"admin", password:"admin"])
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 					   ["urn:test2", "urn:test:predicate", "hello world2"]])
 	}

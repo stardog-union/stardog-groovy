@@ -52,6 +52,8 @@ To get started, just clone the project. You'll need a local copy of Stardog to b
 
 Go to [http://stardog.com](http://stardog.com), download and install the database. If you want to use Stardog Spring, pick up the latest jar and drop in the stardog/lib folder
 
+Stardog-groovy does have a dependency on stardog-spring.  For 1.x, this requires a build of stardog-spring and placing the stardog-spring.jar file in stardog-1.x/lib.  For future releases of Stardog, ie 2.x, Stardog dependencies will be available in Maven and this step will be eliminated.
+
 Once you have the local project, change the build.gradle file 
 
     def stardogLocation = "/home/wherever/tools/stardog/stardog-1.1/lib"

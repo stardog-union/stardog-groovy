@@ -190,7 +190,7 @@ class Stardog {
 			dataSource.releaseConnection(con)
 		}
 	}
-	
+
 	/**
 	 * <code>each</code>
 	 * iterates over a Binding result
@@ -222,7 +222,7 @@ class Stardog {
 			dataSource.releaseConnection(con)
 		}
 	}
-	
+
 	/**
 	 * <code>insert</code>
 	 * Inserts either a single list, or a list of lists of triples
@@ -248,8 +248,10 @@ class Stardog {
 							if (o.class == java.net.URI.class) {
 								graph.add(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString()))
 							}
-							else {
+							else if (o.class == java.lang.String.class) {
 								graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+							} else {
+								graph.add(new URIImpl(s), new URIImpl(p), o);
 							}
 						}
 					}
@@ -260,8 +262,10 @@ class Stardog {
 					if (o.class == java.net.URI.class) {
 						graph.add(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString()))
 					}
-					else {
+					else if (o.class == java.lang.String.class) {
 						graph.add(new URIImpl(s), new URIImpl(p), new LiteralImpl(o));
+					} else {
+						graph.add(new URIImpl(s), new URIImpl(p), o);
 					}
 				}
 			}

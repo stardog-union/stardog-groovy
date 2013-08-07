@@ -21,6 +21,9 @@ import com.clarkparsia.stardog.api.Query
 import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.query.TupleQueryResult
+import org.openrdf.model.impl.CalendarLiteralImpl;
+import javax.xml.datatype.DatatypeFactory
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * @author Al Baker
@@ -37,7 +40,7 @@ class TestStardog {
 	public void setUp() throws Exception {
 		stardog = new Stardog([embedded:true, createIfNotPresent:true, to:"testgroovy", username:"admin", password:"admin"])
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
-					   ["urn:test2", "urn:test:predicate", "hello world2"]])
+			["urn:test2", "urn:test:predicate", "hello world2"]])
 	}
 
 	/**
@@ -60,10 +63,10 @@ SELECT ?s ?p ?o
 				while (result.hasNext()) {
 					println result.next();
 				}
-				
+
 				result.close();
-				
-				
+
+
 			} catch (Exception e) {
 				println "Caught exception ${e}"
 			}
@@ -80,14 +83,14 @@ SELECT ?s ?p ?o
 		stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
 		assertTrue(list.size == 2)
 	}
-	
+
 	@Test
 	public void testEach() {
 		assertNotNull(stardog)
-		def a 
+		def a
 		def b
 		def c
-		stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { 
+		stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", {
 			a = x
 			b = y
 			c = z
@@ -106,7 +109,27 @@ SELECT ?s ?p ?o
 		stardog.remove(["urn:test3", "urn:test:predicate", "hello world"])
 		stardog.remove(["urn:test4", "urn:test:predicate", "hello world2"])
 	}
+
+	@Test
+	public void testInsertRemove2() {
+		assertNotNull(stardog)
+		stardog.insert(["urn:test3", "urn:test:predicate", "hello world"])
+		stardog.remove(["urn:test3", "urn:test:predicate", "hello world"])
+		stardog.insert(["urn:test3", "urn:test:predicate", new URI("http://test")])
+		stardog.remove(["urn:test3", "urn:test:predicate", new URI("http://test")])
+		def date = new Date()
 	
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(date)
+	//	gc.setTimeInMillis(time.getTime());
+		DatatypeFactory df = DatatypeFactory.newInstance();
+		XMLGregorianCalendar xc = df.newXMLGregorianCalendar (gc);
+		def d = new CalendarLiteralImpl(xc)
+
+		stardog.insert(["urn:test3", "urn:test:predicate", d])
+
+	}
+
 	@Test
 	public void testURIInsertRemove() {
 		assertNotNull(stardog)

@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.clarkparsia.stardog.ext.groovy;
+package com.complexible.stardog.ext.groovy;
 
 import static org.junit.Assert.*;
 
-import com.clarkparsia.stardog.api.Query
+import com.complexible.stardog.api.SelectQuery
+import com.complexible.stardog.ext.groovy.Stardog;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.query.TupleQueryResult
 import org.openrdf.model.impl.CalendarLiteralImpl;
+
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -44,7 +47,7 @@ class TestStardog {
 	}
 
 	/**
-	 * Test method for {@link com.clarkparsia.stardog.ext.groovy.Stardog#withConnection(groovy.lang.Closure)}.
+	 * Test method for {@link com.complexible.stardog.ext.groovy.Stardog#withConnection(groovy.lang.Closure)}.
 	 */
 	@Test
 	public void testWithConnection() {
@@ -58,8 +61,8 @@ SELECT ?s ?p ?o
 			"""
 			TupleQueryResult result = null;
 			try {
-				Query query = con.query(queryString);
-				result = query.executeSelect();
+				SelectQuery query = con.select(queryString);
+				result = query.execute();
 				while (result.hasNext()) {
 					println result.next();
 				}
@@ -74,7 +77,7 @@ SELECT ?s ?p ?o
 	}
 
 	/**
-	 * Test method for {@link com.clarkparsia.stardog.ext.groovy.Stardog#query(java.lang.String, groovy.lang.Closure)}.
+	 * Test method for {@link com.complexible.stardog.ext.groovy.Stardog#query(java.lang.String, groovy.lang.Closure)}.
 	 */
 	@Test
 	public void testQuery() {
@@ -83,7 +86,22 @@ SELECT ?s ?p ?o
 		stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
 		assertTrue(list.size == 2)
 	}
-
+	
+	/**
+	 * Test method for {@link com.complexible.stardog.ext.groovy.Stardog#query(java.lang.String, groovy.lang.Closure)}.
+	 */
+	@Test
+	public void testUpdate() {
+		assertNotNull(stardog)
+		stardog.update("DELETE { ?a ?b \"hello world2\" } INSERT { ?a ?b \"aloha world2\" } WHERE { ?a ?b \"hello world2\" }")
+		
+		def list = []
+		stardog.query("SELECT ?x ?y ?z WHERE { ?x ?y \"aloha world2\" } LIMIT 2", { list << it } )
+		assertTrue(list.size == 1)
+		
+		stardog.update("DELETE { ?a ?b \"aloha world2\" } INSERT { ?a ?b \"hello world2\" } WHERE { ?a ?b \"aloha world2\" }")
+	}
+	
 	@Test
 	public void testEach() {
 		assertNotNull(stardog)
@@ -96,9 +114,9 @@ SELECT ?s ?p ?o
 			c = z
 
 		} )
-		assertTrue(a.stringValue().equals("urn:test1"))
+		assertTrue(a.stringValue().equals("urn:test2"))
 		assertTrue(b.stringValue().equals("urn:test:predicate"))
-		assertTrue(c.stringValue().equals("hello world"))
+		assertTrue(c.stringValue().equals("hello world2"))
 	}
 
 	@Test
@@ -135,12 +153,12 @@ SELECT ?s ?p ?o
 		assertNotNull(stardog)
 		def list = []
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
-			["urn:test2", "urn:test:predicate", new java.net.URI("http://www.clarkparsia.com")]])
-		stardog.query("select ?s ?p {?s ?p <http://www.clarkparsia.com> }", { list << it })
+			["urn:test2", "urn:test:predicate", new java.net.URI("http://www.complexible.com")]])
+		stardog.query("select ?s ?p {?s ?p <http://www.complexible.com> }", { list << it })
 		assertEquals(list.size(), 1)
 		list.clear()
-		stardog.remove(["urn:test2", "urn:test:predicate", new java.net.URI("http://www.clarkparsia.com")])
-		stardog.query("select ?s ?p {?s ?p <http://www.clarkparsia.com> }", { list << it })
+		stardog.remove(["urn:test2", "urn:test:predicate", new java.net.URI("http://www.complexible.com")])
+		stardog.query("select ?s ?p {?s ?p <http://www.complexible.com> }", { list << it })
 		assertEquals(list.size(), 0)
 		list.clear()
 	}

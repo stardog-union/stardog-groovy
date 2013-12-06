@@ -6,7 +6,7 @@ _Current Version **2.0.0**_
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
-![Stardog](http://stardog.com/_/img/sdog.png)   
+![Stardog](http://docs.stardog.com/img/sd.png)   
 
 ## What is it? ##
 

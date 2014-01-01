@@ -1,12 +1,13 @@
 apply plugin: 'groovy'
-apply plugin:"maven"
+apply plugin: 'maven'
+apply plugin: 'codenarc'
 
 // UPDATE TO YOUR STARDOG LOCATION
 
 def stardogLocation = '<UPDATE>'
 
-repositories {
-	mavenLocal()
+repositories {	
+    mavenLocal()
     mavenCentral()
 }
 

@@ -36,11 +36,11 @@ import org.openrdf.query.TupleQueryResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import com.complexible.common.openrdf.Graphs
+import com.complexible.common.openrdf.model.Graphs
 import com.complexible.stardog.api.ConnectionConfiguration
 import com.complexible.stardog.api.ConnectionPool
 import com.complexible.stardog.api.ConnectionPoolConfig
-import com.complexible.stardog.protocols.snarl.SNARLProtocol
+import com.complexible.stardog.protocols.snarl.SNARLProtocolConstants
 import com.complexible.stardog.reasoning.api.ReasoningType
 import com.complexible.stardog.StardogException
 import com.complexible.stardog.api.Adder
@@ -119,7 +119,7 @@ class Stardog {
 		}
 
 		if (embedded) {
-	        com.complexible.stardog.Stardog.buildServer().bind(SNARLProtocol.EMBEDDED_ADDRESS).start()
+	        com.complexible.stardog.Stardog.buildServer().bind(SNARLProtocolConstants.EMBEDDED_ADDRESS).start()
 		}
 
 		if (createIfNotPresent) {

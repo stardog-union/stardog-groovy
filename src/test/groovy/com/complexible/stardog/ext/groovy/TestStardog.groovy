@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.complexible.stardog.ext.groovy;
+package com.complexible.stardog.ext.groovy
 
 import static org.junit.Assert.*;
 
 import com.complexible.stardog.api.SelectQuery
-import com.complexible.stardog.ext.groovy.Stardog;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,12 +35,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
 class TestStardog {
 
 	def stardog
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		stardog = new Stardog([embedded:true, createIfNotPresent:true, to:"testgroovy", username:"admin", password:"admin"])
+
+		stardog = new Stardog([url: "snarl://localhost:5820/", to:"testdb", username:"admin", password:"admin"])
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 			["urn:test2", "urn:test:predicate", "hello world2"]])
 	}

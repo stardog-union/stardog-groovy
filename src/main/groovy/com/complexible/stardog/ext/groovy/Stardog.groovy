@@ -15,44 +15,18 @@
  */
 package com.complexible.stardog.ext.groovy
 
-import groovy.lang.Closure
-
-import java.util.ArrayList
-import java.util.List
-import java.util.Map
-import java.util.Map.Entry
-
-import org.openrdf.model.Graph
+import com.complexible.common.openrdf.model.Graphs
+import com.complexible.stardog.api.*
+import com.complexible.stardog.ext.spring.DataSource
+import com.complexible.stardog.ext.spring.utils.TypeConverter
 import org.openrdf.model.Resource
-import org.openrdf.model.Statement
 import org.openrdf.model.Value
 import org.openrdf.model.impl.LiteralImpl
 import org.openrdf.model.impl.StatementImpl
 import org.openrdf.model.impl.URIImpl
 import org.openrdf.model.impl.ValueFactoryImpl
-import org.openrdf.query.GraphQueryResult
-import org.openrdf.query.QueryEvaluationException
 import org.openrdf.query.TupleQueryResult
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-import com.complexible.common.openrdf.model.Graphs
-import com.complexible.stardog.api.ConnectionConfiguration
-import com.complexible.stardog.api.ConnectionPool
-import com.complexible.stardog.api.ConnectionPoolConfig
-import com.complexible.stardog.protocols.snarl.SNARLProtocolConstants
-import com.complexible.stardog.reasoning.api.ReasoningType
-import com.complexible.stardog.StardogException
-import com.complexible.stardog.api.Adder
-import com.complexible.stardog.api.Connection
-import com.complexible.stardog.api.Getter
-import com.complexible.stardog.api.SelectQuery
-import com.complexible.stardog.api.Remover
-import com.complexible.stardog.api.UpdateQuery
-import com.complexible.stardog.api.admin.AdminConnection
-import com.complexible.stardog.api.admin.AdminConnectionConfiguration
-import com.complexible.stardog.ext.spring.DataSource
-import com.complexible.stardog.ext.spring.utils.TypeConverter
 
 /**
  * Stardog - Groovy wrapper on top of SNARL for easy access
@@ -66,8 +40,6 @@ import com.complexible.stardog.ext.spring.utils.TypeConverter
  */
 class Stardog {
 
-	// for fully formed connectionStrings, takes priority if not null
-	def connectionString
 
 	// standard properties, similar to ConnectionConfiguration and Stardog-Spring DataSource
 	String url
@@ -90,7 +62,6 @@ class Stardog {
 		url = props.url ?: null
 		username = props.username ?: null
 		password = props.password ?: null
-		createIfNotPresent  = props.createIfNotPresent ?: false
 		to = props.to ?: null
 		failAtCapacity = props.failAtCapacity ?: false
 		growAtCapacity = props.growAtCapacity ?: true
@@ -98,7 +69,6 @@ class Stardog {
 		maxPool = props.maxPool ?: 100
 		minPool = props.minPool ?: 100
 		noExpiration = props.noExpiration ?: false
-		embedded = props.embedded ?: false
 
 		if (props.home) {
 			System.setProperty("stardog.home", props.home)
@@ -115,20 +85,7 @@ class Stardog {
 		connectionConfig = ConnectionConfiguration.to(to)
 
 		if (url != null) {
-			connectionConfig = connectionConfig.url(url)
-		}
-
-		if (embedded) {
-	        com.complexible.stardog.Stardog.buildServer().bind(SNARLProtocolConstants.EMBEDDED_ADDRESS).start()
-		}
-
-		if (createIfNotPresent) {
-			AdminConnection dbms = AdminConnectionConfiguration.toEmbeddedServer().credentials(username, password).connect()
-			if (dbms.list().contains(to)) {
-				dbms.drop(to)
-			}
-			dbms.createMemory(to)
-			dbms.close()
+			connectionConfig = connectionConfig.server(url)
 		}
 
 		connectionConfig = connectionConfig.credentials(username, password)
@@ -255,7 +212,7 @@ class Stardog {
 				def input = result.next().iterator().collectEntries( {
 					[ (it.getName()) : (it.getValue()) ]
 				})
-				println "Stardog.each(): input = ${input}"
+				//println "Stardog.each(): input = ${input}"
 				// binds the Sesame result set as a map into the closure so SPARQL variables
 				// become closure native variables, e.g. "x"
 				c.delegate = input
@@ -320,7 +277,7 @@ class Stardog {
 			con.add().graph(Graphs.newGraph(statements))
 			con.commit()
 
-		} catch (StardogException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
 			adder = null
@@ -370,7 +327,7 @@ class Stardog {
 			connection.begin()
 			connection.remove().statements(subjectResource, predicateResource, objectValue, context)
 			connection.commit()
-		} catch (StardogException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
 			dataSource.releaseConnection(connection)

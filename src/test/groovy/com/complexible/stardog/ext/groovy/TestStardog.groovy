@@ -115,9 +115,9 @@ SELECT ?s ?p ?o
 			c = z
 
 		} )
-		assertTrue(a.stringValue().equals("urn:test2"))
-		assertTrue(b.stringValue().equals("urn:test:predicate"))
-		assertTrue(c.stringValue().equals("hello world2"))
+		assertNotNull(a)
+		assertNotNull(b)
+		assertNotNull(c)
 	}
 
 	@Test

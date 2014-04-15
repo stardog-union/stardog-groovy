@@ -54,11 +54,12 @@ Go to [http://stardog.com](http://stardog.com), download and install the databas
 
 Stardog-groovy does have a dependency on stardog-spring.  For 1.x, this requires a build of stardog-spring and placing the stardog-spring.jar file in stardog-1.x/lib.  For 2.x, Stardog Spring is available with a pom file, and the Stardog Spring installs the jar in your local .m2 folder.
 
-Once you have the local project, start up a local Stardog and create a testdb.
+Once you have the local project, start up a local Stardog and create a testdb with "stardog-admin db create -n testdb".
 
 You can then build the project
 
-    gradle build
+    gradle build    # validate all the test pass
+    gradle install  # install jar into local m2
 
 That will run all the JUnit tests and create the jar in build/libs.  The test does use a running Stardog, started out of band from JUnit.
 

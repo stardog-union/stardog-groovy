@@ -17,8 +17,8 @@ package com.complexible.stardog.ext.groovy
 
 import com.complexible.common.openrdf.model.Graphs
 import com.complexible.stardog.api.*
-import com.complexible.stardog.ext.spring.DataSource
-import com.complexible.stardog.ext.spring.utils.TypeConverter
+import com.complexible.stardog.StardogException;
+
 import org.openrdf.model.Resource
 import org.openrdf.model.Value
 import org.openrdf.model.impl.LiteralImpl
@@ -56,6 +56,13 @@ class Stardog {
 	boolean embedded = false
 	String home
 
+	private ConnectionPool pool;
+
+	private ConnectionConfiguration connectionConfig;
+
+	private ConnectionPoolConfig poolConfig;
+
+
 	public Stardog() { }
 
 	public Stardog(Map props) {
@@ -78,9 +85,6 @@ class Stardog {
 	}
 
 	void initialize() {
-		ConnectionConfiguration connectionConfig
-
-		ConnectionPoolConfig poolConfig
 
 		connectionConfig = ConnectionConfiguration.to(to)
 
@@ -95,35 +99,39 @@ class Stardog {
 				.minPool(minPool)
 				.maxPool(maxPool)
 
-		dataSource = new DataSource(connectionConfig, poolConfig)
-
-		dataSource.afterPropertiesSet()
+		pool = poolConfig.create();
 	}
 
-	private DataSource dataSource
 
-	/**
-	 * @return the dataSource
-	 */
-	public DataSource getDataSource() {
-		return dataSource
+	public Connection getConnection() {
+		try {
+			if (pool == null)
+				afterPropertiesSet();
+			return pool.obtain();
+		} catch (StardogException e) {
+			log.error("Error obtaining connection from Stardog pool", e);
+			throw new RuntimeException(e);
+		}
 	}
 
-	/**
-	 * @param dataSource the dataSource to set
-	 */
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource
+	public void releaseConnection(Connection connection) {
+		try {
+			pool.release(connection);
+		} catch (StardogException e) {
+			log.error("Error releasing connection from Stardog pool", e);
+			throw new RuntimeException(e);
+		}
 	}
+
 
 	/**
 	 * <code>withConnection</code>
 	 * @param Closure to execute over the connection
 	 */
 	public void withConnection(Closure c) {
-		Connection con = dataSource.getConnection()
+		Connection con = getConnection()
 		c.call(con)
-		dataSource.releaseConnection(con)
+		releaseConnection(con)
 	}
 
 	/**
@@ -142,7 +150,7 @@ class Stardog {
 	 * @param closure to execute over the result set
 	 */
 	public void query(String queryString, Map args, Closure c) {
-		Connection con = dataSource.getConnection()
+		Connection con = getConnection()
 		TupleQueryResult result = null
 		try {
 			SelectQuery query = con.select(queryString)
@@ -161,7 +169,7 @@ class Stardog {
 		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
-			dataSource.releaseConnection(con)
+			releaseConnection(con)
 		}
 	}
 	
@@ -179,7 +187,7 @@ class Stardog {
 	 * @param args map of string and object to pass bind as input parameters
 	 */
 	public void update(String queryString, Map args) {
-		Connection con = dataSource.getConnection()
+		Connection con = getConnection()
 		try {
 			def query = con.update(queryString)
 			
@@ -192,7 +200,7 @@ class Stardog {
 		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
-			dataSource.releaseConnection(con)
+			releaseConnection(con)
 		}
 	}
 	
@@ -203,7 +211,7 @@ class Stardog {
 	 * @param closure with each SPARQL query bound into the closure
 	 */
 	public void each(String queryString, Closure c) {
-		Connection con = dataSource.getConnection()
+		Connection con = getConnection()
 		TupleQueryResult result = null
 		try {
 			SelectQuery query = con.select(queryString)
@@ -224,7 +232,7 @@ class Stardog {
 		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
-			dataSource.releaseConnection(con)
+			releaseConnection(con)
 		}
 	}
 
@@ -236,7 +244,7 @@ class Stardog {
 	 * @param arr lists
 	 */
 	public void insert(List arr) {
-		Connection con = dataSource.getConnection()
+		Connection con = getConnection()
 		Adder adder = null
 		try {
 			def statements = []
@@ -281,7 +289,7 @@ class Stardog {
 			throw new RuntimeException(e)
 		} finally {
 			adder = null
-			dataSource.releaseConnection(con)
+			releaseConnection(con)
 		}
 
 	}
@@ -292,7 +300,7 @@ class Stardog {
 	 * @param list of format subject, predicate, object, graph URI
 	 */
 	public void remove(List args) {
-		Connection connection = dataSource.getConnection()
+		Connection connection = getConnection()
 		def subject = args[0]
 		def predicate = args[1]
 		def object = args[2]
@@ -330,7 +338,7 @@ class Stardog {
 		} catch (Exception e) {
 			throw new RuntimeException(e)
 		} finally {
-			dataSource.releaseConnection(connection)
+			releaseConnection(connection)
 		}
 	}
 

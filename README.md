@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **2.1.2**_ 
+_Current Version **2.1.3**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -14,7 +14,11 @@ This bindings provides a set of idiomatic Groovy APIs for interacting with the S
 
 To run the queries, Stardog Groovy uses standard Groovy patterns, such as passing in a closure to iterate over result sets.  In many ways, it is similar to Groovy SPARQL, the SQL bindings in Groovy, etc.
 
-These bindings also integrate with [Stardog Spring](https://github.com/clarkparsia/stardog-spring) and can be configured with the DataSource, making [Grails](http://grails.org) integration easier.
+Significant changes in 2.1.3:
+
+*    Installation now available via Maven Central and "com.complexible.stardog:stardog-groovy:2.1.3" dependency
+*    No longer a dependency on Spring, i.e. the Stardog-Spring DataSource can no longer be passed as a constructor.  The Stardog Groovy class performs all the same operations.
+
 
 ## Examples ##
 

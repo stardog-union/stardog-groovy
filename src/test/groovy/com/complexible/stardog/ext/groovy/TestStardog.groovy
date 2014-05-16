@@ -148,6 +148,16 @@ SELECT ?s ?p ?o
 		stardog.insert(["urn:test3", "urn:test:predicate", d])
 
 	}
+	
+	@Test
+	public void testInsertRemove3() {
+		assertNotNull(stardog)
+		stardog.insert([["urn:test5", "urn:test:predicate", "hello world"],
+						["urn:test5", "urn:test:predicate2", "hello world3"],
+						["urn:test6", "urn:test:predicate", "hello world2"]])
+		stardog.remove(["urn:test5"])
+		stardog.remove(["urn:test6", "urn:test:predicate"])
+	}
 
 	@Test
 	public void testURIInsertRemove() {

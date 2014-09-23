@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **2.1.3**_ 
+_Current Version **2.2.1**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -56,7 +56,7 @@ To get started, just clone the project. You'll need a local copy of Stardog to b
 
 Go to [http://stardog.com](http://stardog.com), download and install the database. If you want to use Stardog Spring, pick up the latest jar and pom and install in your local Maven repo.  
 
-Stardog-groovy does have a dependency on stardog-spring.  For 1.x, this requires a build of stardog-spring and placing the stardog-spring.jar file in stardog-1.x/lib.  For 2.x, Stardog Spring is available with a pom file, and the Stardog Spring installs the jar in your local .m2 folder.
+Prior to version 2.1.3, stardog-groovy does have a dependency on stardog-spring.  For 1.x, this requires a build of stardog-spring and placing the stardog-spring.jar file in stardog-1.x/lib.  For 2.x, Stardog Spring is available with a pom file, and the Stardog Spring installs the jar in your local .m2 folder.
 
 Once you have the local project, start up a local Stardog and create a testdb with "stardog-admin db create -n testdb".
 

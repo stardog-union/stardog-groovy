@@ -1,0 +1,23 @@
+apply plugin: "groovy"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+apply plugin: 'com.github.tkruse.groovysh'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.tkruse.gradle:gradle-groovysh-plugin:1.0.2'
+    }
+}
+
+dependencies {
+    compile 'com.complexible.stardog:stardog-groovy:2.2.1'
+    compile 'org.codehaus.groovy:groovy-all:2.1.3'
+}
+

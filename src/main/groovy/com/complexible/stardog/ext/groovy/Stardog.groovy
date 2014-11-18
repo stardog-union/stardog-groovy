@@ -237,6 +237,28 @@ class Stardog {
 	}
 
 	/**
+	 * <code>validTripleList</code>
+	 * @param l representing the triple
+	 * @return boolean if it is valid list, ie contains s, p, o.
+	 */
+	boolean validTripleList(List l) {
+
+		if (l == null) { return false }
+
+		if (l.size != 3) { return false }
+
+		def s = l[0]
+		def p = l[1]
+		def o = l[2]
+
+		if (s && p && o) {
+			return true
+		} else {
+			return false
+		}
+	}
+
+	/**
 	 * <code>insert</code>
 	 * Inserts either a single list, or a list of lists of triples
 	 * assumes URIImpl(s,p)
@@ -251,7 +273,7 @@ class Stardog {
 			if (arr.size >= 1) {
 				if (arr[0].class == java.util.ArrayList.class) {
 					arr.each { arr2 ->
-						if (arr2.size == 3) {
+						if (validTripleList(arr2)) {
 							def s = arr2[0]
 							def p = arr2[1]
 							def o = arr2[2]
@@ -267,17 +289,17 @@ class Stardog {
 						}
 					}
 				} else {
-					def s = arr[0]
-					def p = arr[1]
-					def o = arr[2]
-					if (o.class == java.net.URI.class) {
-						statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString())))
-					}
-					else if (o.class == java.lang.String.class) {
-						statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new LiteralImpl(o)))
-					}
-					else {
-						statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), o))
+					if (validTripleList(arr)) {
+						def s = arr[0]
+						def p = arr[1]
+						def o = arr[2]
+						if (o.class == java.net.URI.class) {
+							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString())))
+						} else if (o.class == java.lang.String.class) {
+							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new LiteralImpl(o)))
+						} else {
+							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), o))
+						}
 					}
 				}
 			}

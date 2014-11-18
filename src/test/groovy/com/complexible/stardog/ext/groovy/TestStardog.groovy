@@ -173,4 +173,22 @@ SELECT ?s ?p ?o
 		assertEquals(list.size(), 0)
 		list.clear()
 	}
+
+	@Test
+	public void testIsValidTripleList() {
+
+		List nullList
+		assertFalse stardog.validTripleList(nullList)
+
+		def incompleteList = ["a", "b"]
+		assertFalse stardog.validTripleList(incompleteList)
+
+		def invalidList = ["a", "b", null]
+		assertFalse stardog.validTripleList(invalidList)
+
+		def validList = ["a", "b", "c"]
+		assertTrue stardog.validTripleList(validList)
+
+	}
+
 }

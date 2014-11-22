@@ -10,9 +10,53 @@ Stardog Groovy - Groovy language bindings to use to develop apps with the [Stard
 
 ## What is it? ##
 
-This bindings provides a set of idiomatic Groovy APIs for interacting with the Stardog database, similar to the Stardog Spring project - an easy to use method for creating connection pools, and the ability run queries over them.
+This bindings provides a set of idiomatic Groovy APIs for interacting with the Stardog database, similar to the Stardog Spring project - an easy to use method for creating connection pools, and the ability run queries over them. To run the queries, Stardog Groovy uses standard Groovy patterns, such as passing in a closure to iterate over result sets.  Common use cases for Stardog-groovy are ETL scripts, command line applications, usage with Grails, or other Groovy frameworks.   
 
-To run the queries, Stardog Groovy uses standard Groovy patterns, such as passing in a closure to iterate over result sets.  In many ways, it is similar to Groovy SPARQL, the SQL bindings in Groovy, etc.
+## How to use it
+
+1. Download Stardog from stardog.com, and follow the installation instructions
+2. Run the `mavenInstall` script found in the Stardog distribution
+3. Add the `com.complexible.stardog:stardog-groovy:<version>` dependency declaration to your build tool, such as Maven or Gradle
+4. Make sure your build prioritizes your local Maven repository (i.e. `~/.m2/repository`), where the core Stardog binaries were installed by step 2
+5. Enjoy!
+
+
+## Examples ##
+
+Create a new embedded database in one line
+```groovy
+	def stardog = new Stardog([home:"/opt/stardog", to:"testgroovy", username:"admin", password:"admin"])
+```
+
+Collect query results via a closure
+```groovy
+	def list = []
+	stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
+	// list has the two Sesame BindingSet's added to it, ie TupleQueryResult.next called per each run on the closure
+```
+
+Collect query results via projected result values
+```groovy
+    stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", {
+       println x // whatever x is bound to in the result set
+       println y // ..
+       println z // 
+    }
+```
+
+Like query, this is executed over each TupleQueryResult
+
+Insert multidimensional arrays, single triples also works
+```groovy
+	stardog.insert([ ["urn:test3", "urn:test:predicate", "hello world"], ["urn:test4", "urn:test:predicate", "hello world2"] ])
+```
+
+Remove triples via a simple groovy list
+```groovy
+	stardog.remove(["urn:test3", "urn:test:predicate", "hello world"])
+```
+
+## Upgrading from Prior Releases
 
 Significant changes in 2.1.3:
 
@@ -20,35 +64,6 @@ Significant changes in 2.1.3:
 *    No longer a dependency on Spring, i.e. the Stardog-Spring DataSource can no longer be passed as a constructor.  The Stardog Groovy class performs all the same operations.
 
 
-## Examples ##
-
-Create a new embedded database in one line
-
-	def stardog = new Stardog([home:"/opt/stardog", to:"testgroovy", username:"admin", password:"admin"])
-
-Collect query results via a closure
-
-	def list = []
-	stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
-	// list has the two Sesame BindingSet's added to it, ie TupleQueryResult.next called per each run on the closure
-
-Collect query results via projected result values
-
-    stardog.each("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", {
-       println x // whatever x is bound to in the result set
-       println y // ..
-       println z // 
-    }
-
-Like query, this is executed over each TupleQueryResult
-
-Insert multidimensional arrays, single triples also works
-
-	stardog.insert([ ["urn:test3", "urn:test:predicate", "hello world"], ["urn:test4", "urn:test:predicate", "hello world2"] ])
-
-Remove triples via a simple groovy list
-
-	stardog.remove(["urn:test3", "urn:test:predicate", "hello world"])
 
 ## Development ##
 

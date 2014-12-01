@@ -27,6 +27,7 @@ import org.openrdf.model.impl.URIImpl
 import org.openrdf.model.impl.ValueFactoryImpl
 import org.openrdf.query.TupleQueryResult
 
+import groovy.util.logging.*
 
 /**
  * Stardog - Groovy wrapper on top of SNARL for easy access
@@ -38,6 +39,7 @@ import org.openrdf.query.TupleQueryResult
  * @author Clark & Parsia, LLC
  *
  */
+@Slf4j
 class Stardog {
 
 

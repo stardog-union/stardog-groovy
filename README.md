@@ -69,22 +69,17 @@ Significant changes in 2.1.3:
 
 To get started, just clone the project. You'll need a local copy of Stardog to be able to run the build. For more information on starting the Stardog DB service and how it works, go to [Stardog's documentation](http://stardog.com/docs/), where you'll find everything you need to get up and running with Stardog.
 
-Go to [http://stardog.com](http://stardog.com), download and install the database. If you want to use Stardog Spring, pick up the latest jar and pom and install in your local Maven repo.  
-
-Prior to version 2.1.3, stardog-groovy does have a dependency on stardog-spring.  For 1.x, this requires a build of stardog-spring and placing the stardog-spring.jar file in stardog-1.x/lib.  For 2.x, Stardog Spring is available with a pom file, and the Stardog Spring installs the jar in your local .m2 folder.
-
-Once you have the local project, start up a local Stardog and create a testdb with "stardog-admin db create -n testdb".
+Once you have the local project, start up a local Stardog and create a testdb with "stardog-admin db create -n testdb $STARDOG/data/examples/lumbSchema.owl".
 
 You can then build the project
 
     gradle build    # validate all the test pass
     gradle install  # install jar into local m2
 
-That will run all the JUnit tests and create the jar in build/libs.  The test does use a running Stardog, started out of band from JUnit.
+That will run all the JUnit tests and create the jar in build/libs.  The test does use a running Stardog, and if you receive error during the test it is likely you're Stardog server is not running or has an invalid license.  
 
-As of Stardog-Groovy 2.1.2, the jar is now built with Groovy 2.2.2 as a dependency
 
-## NOTE ##
+## Contributing ##
 
 This framework is in continuous development, please check the [issues](https://github.com/clarkparsia/stardog-groovy/issues) page. You're welcome to contribute.
 

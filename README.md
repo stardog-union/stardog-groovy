@@ -69,14 +69,14 @@ Significant changes in 2.1.3:
 
 To get started, just clone the project. You'll need a local copy of Stardog to be able to run the build. For more information on starting the Stardog DB service and how it works, go to [Stardog's documentation](http://stardog.com/docs/), where you'll find everything you need to get up and running with Stardog.
 
-Once you have the local project, start up a local Stardog and create a testdb with "stardog-admin db create -n testdb $STARDOG/data/examples/lumbSchema.owl".
+Once you have the local project, start up a local Stardog and create a testdb with `stardog-admin db create -n testdb $STARDOG/data/examples/lumbSchema.owl $STARDOG/data/examples/University0_0.owl`. 
 
 You can then build the project
 
     gradle build    # validate all the test pass
     gradle install  # install jar into local m2
 
-That will run all the JUnit tests and create the jar in build/libs.  The test does use a running Stardog, and if you receive error during the test it is likely you're Stardog server is not running or has an invalid license.  
+That will run all the JUnit tests and create the jar in build/libs.  The test does use a running Stardog, and if you receive error during the test it is likely you're Stardog server is not running or has an invalid license.  This usually manifests in an exit of a Gradle worker, which is the JVM running the JUnit tests. 
 
 
 ## Contributing ##

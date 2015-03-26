@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **2.2.4**_ 
+_Current Version **3.0.0**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -85,7 +85,8 @@ This framework is in continuous development, please check the [issues](https://g
 
 ## License
 
-Copyright 2012-2014 Clark & Parsia, Al Baker
+Copyright 2012 - 2015 Clark & Parsia, LLC
+Copyright 2012 Al Baker
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

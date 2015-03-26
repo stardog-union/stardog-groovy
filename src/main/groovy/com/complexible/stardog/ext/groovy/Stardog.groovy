@@ -56,6 +56,7 @@ class Stardog {
 	int minPool = 10
 	boolean noExpiration = false
 	boolean embedded = false
+	boolean reasoning = false
 	String home
 
 	private ConnectionPool pool;
@@ -78,6 +79,7 @@ class Stardog {
 		maxPool = props.maxPool ?: 100
 		minPool = props.minPool ?: 100
 		noExpiration = props.noExpiration ?: false
+		reasoning = props.reasoning ?: false
 
 		if (props.home) {
 			System.setProperty("stardog.home", props.home)
@@ -94,7 +96,9 @@ class Stardog {
 			connectionConfig = connectionConfig.server(url)
 		}
 
-		connectionConfig = connectionConfig.credentials(username, password)
+		connectionConfig = connectionConfig
+				.credentials(username, password)
+				.reasoning(reasoning)
 
 		poolConfig = ConnectionPoolConfig
 				.using(connectionConfig)
@@ -108,7 +112,7 @@ class Stardog {
 	public Connection getConnection() {
 		try {
 			if (pool == null)
-				afterPropertiesSet();
+				initialize();
 			return pool.obtain();
 		} catch (StardogException e) {
 			log.error("Error obtaining connection from Stardog pool", e);

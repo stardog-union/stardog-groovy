@@ -86,6 +86,7 @@ This framework is in continuous development, please check the [issues](https://g
 ## License
 
 Copyright 2012 - 2015 Clark & Parsia, LLC
+
 Copyright 2012 Al Baker
 
 Licensed under the Apache License, Version 2.0 (the "License");

@@ -17,6 +17,7 @@ package com.complexible.stardog.ext.groovy
 
 import com.complexible.common.openrdf.model.Graphs
 import com.complexible.stardog.api.*
+import com.complexible.stardog.reasoning.api.ReasoningType
 import com.complexible.stardog.StardogException;
 
 import org.openrdf.model.Resource
@@ -47,6 +48,7 @@ class Stardog {
 	String url
 	String username
 	String password
+	String reasoning
 	boolean createIfNotPresent = false
 	String to
 	boolean failAtCapacity = false
@@ -71,6 +73,7 @@ class Stardog {
 		url = props.url ?: null
 		username = props.username ?: null
 		password = props.password ?: null
+		reasoning = props.reasoning ?: null
 		to = props.to ?: null
 		failAtCapacity = props.failAtCapacity ?: false
 		growAtCapacity = props.growAtCapacity ?: true
@@ -89,6 +92,10 @@ class Stardog {
 	void initialize() {
 
 		connectionConfig = ConnectionConfiguration.to(to)
+				
+		if (reasoning != null) {
+			connectionConfig = connectionConfig.reasoning(ReasoningType.valueOf(reasoning))
+		}
 
 		if (url != null) {
 			connectionConfig = connectionConfig.server(url)

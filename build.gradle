@@ -4,7 +4,7 @@ apply plugin: 'signing'
 //apply plugin: 'codenarc'
 
 group = 'com.complexible.stardog'
-version = '3.0.0'
+version = '3.1.4'
 
 repositories {
 	maven {
@@ -16,8 +16,8 @@ repositories {
 
 dependencies {
 
-	compile 'com.complexible.stardog:client-http:3.0'
-	compile 'com.complexible.stardog:client-snarl:3.0'
+	compile 'com.complexible.stardog:client-http:3.1.4'
+	compile 'com.complexible.stardog:client-snarl:3.1.4'
 
 	compile ('org.slf4j:slf4j-api:1.6.1')
 
@@ -88,7 +88,7 @@ uploadArchives {
 
 configure(install.repositories.mavenInstaller) {
 	pom.project {
-		version '3.0.0'
+		version '3.1.4'
 		artifactId 'stardog-groovy'
 		groupId 'com.complexible.stardog'
 	}

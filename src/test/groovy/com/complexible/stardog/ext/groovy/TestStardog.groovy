@@ -22,7 +22,7 @@ import com.complexible.stardog.api.SelectQuery
 import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.query.TupleQueryResult
-import org.openrdf.model.impl.CalendarLiteralImpl;
+import org.openrdf.model.impl.CalendarLiteral;
 
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -151,7 +151,7 @@ SELECT ?s ?p ?o
 	//	gc.setTimeInMillis(time.getTime());
 		DatatypeFactory df = DatatypeFactory.newInstance();
 		XMLGregorianCalendar xc = df.newXMLGregorianCalendar (gc);
-		def d = new CalendarLiteralImpl(xc)
+		def d = new CalendarLiteral(xc)
 
 		stardog.insert(["urn:test3", "urn:test:predicate", d])
 

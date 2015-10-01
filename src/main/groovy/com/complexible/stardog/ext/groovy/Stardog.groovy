@@ -15,7 +15,7 @@
  */
 package com.complexible.stardog.ext.groovy
 
-import com.complexible.common.openrdf.model.Graphs
+import com.complexible.common.openrdf.model.Models2
 import com.complexible.stardog.api.*
 import com.complexible.stardog.StardogException;
 
@@ -310,7 +310,7 @@ class Stardog {
 				}
 			}
 			con.begin()
-			con.add().graph(Graphs.newGraph(statements))
+			con.add().graph(Models2.newModel(statements))
 			con.commit()
 
 		} catch (Exception e) {

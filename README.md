@@ -25,13 +25,13 @@ This bindings provides a set of idiomatic Groovy APIs for interacting with the S
 
 Create a new embedded database in one line
 ```groovy
-	def stardog = new Stardog([home:"/opt/stardog", to:"testgroovy", username:"admin", password:"admin"])
+	def stardog = new Stardog(home:"/opt/stardog", to:"testgroovy", username:"admin", password:"admin")
 ```
 
 Collect query results via a closure
 ```groovy
 	def list = []
-	stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2", { list << it } )
+	stardog.query("select ?x ?y ?z WHERE { ?x ?y ?z } LIMIT 2") { list << it } 
 	// list has the two Sesame BindingSet's added to it, ie TupleQueryResult.next called per each run on the closure
 ```
 

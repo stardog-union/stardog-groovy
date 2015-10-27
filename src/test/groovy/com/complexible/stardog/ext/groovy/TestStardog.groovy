@@ -42,7 +42,7 @@ class TestStardog {
 	@Before
 	public void setUp() throws Exception {
 
-		stardog = new Stardog([url: "snarl://localhost:5820/", to:"testdb", username:"admin", password:"admin", reasoning: true])
+		stardog = new Stardog(url: "snarl://localhost:5820/", to:"testdb", username:"admin", password:"admin", reasoning: true)
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 			["urn:test2", "urn:test:predicate", "hello world2"]])
 	}
@@ -81,7 +81,7 @@ SELECT ?s ?p ?o
 	public void testReasoningConnection() {
 		assertNotNull(stardog)
 		def list = []
-		stardog.query("select ?s ?p ?o WHERE { ?s a <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#Person> }", { list << it } )
+		stardog.query("select ?s ?p ?o WHERE { ?s a <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#Person> }") { list << it } 
 		assertTrue(list.size == 719)
 	}
 

@@ -42,7 +42,7 @@ class TestStardog {
 	@Before
 	public void setUp() throws Exception {
 
-		stardog = new Stardog(url: "snarl://localhost:5820/", to:"testdb", username:"admin", password:"admin", reasoning: true)
+		stardog = new Stardog(url: "http://localhost:5820/", to:"testdb", username:"admin", password:"admin", reasoning: true)
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 			["urn:test2", "urn:test:predicate", "hello world2"]])
 	}
@@ -173,7 +173,9 @@ SELECT ?s ?p ?o
 		def list = []
 		stardog.insert([["urn:test1", "urn:test:predicate", "hello world"],
 			["urn:test2", "urn:test:predicate", new java.net.URI("http://www.complexible.com")]])
+		System.err.println "AAAAAAAA"
 		stardog.query("select ?s ?p {?s ?p <http://www.complexible.com> }", { list << it })
+		System.err.println "BBBBBBBB"
 		assertEquals(list.size(), 1)
 		list.clear()
 		stardog.remove(["urn:test2", "urn:test:predicate", new java.net.URI("http://www.complexible.com")])

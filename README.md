@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **4.1**_ 
+_Current Version **4.2.1**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -15,10 +15,9 @@ This bindings provides a set of idiomatic Groovy APIs for interacting with the S
 ## How to use it
 
 1. Download Stardog from stardog.com, and follow the installation instructions
-2. Run the `mavenInstall` script found in the Stardog distribution
-3. Add the `com.complexible.stardog:stardog-groovy:<version>` dependency declaration to your build tool, such as Maven or Gradle
-4. Make sure your build prioritizes your local Maven repository (i.e. `~/.m2/repository`), where the core Stardog binaries were installed by step 2
-5. Enjoy!
+2. Add the `com.complexible.stardog:stardog-groovy:<version>` dependency declaration to your build tool, such as Maven or Gradle
+3. Make sure your build prioritizes your local Maven repository (i.e. `~/.m2/repository`), where the core Stardog binaries were installed by step 2
+4. Enjoy!
 
 
 ## Examples ##
@@ -62,7 +61,7 @@ Significant changes in 2.1.3:
 
 *    Installation now available via Maven Central and "com.complexible.stardog:stardog-groovy:2.1.3" dependency
 *    No longer a dependency on Spring, i.e. the Stardog-Spring DataSource can no longer be passed as a constructor.  The Stardog Groovy class performs all the same operations.
-
+*    Stardog-groovy 4.2.1 and later should be built with Gradle 2.3
 
 
 ## Development ##

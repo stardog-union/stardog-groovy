@@ -19,12 +19,14 @@ import com.complexible.common.openrdf.model.Models2
 import com.complexible.stardog.api.*
 import com.complexible.stardog.StardogException;
 
+import com.complexible.common.openrdf.model.ModelIO;
+import com.complexible.common.openrdf.model.Models2;
+import com.complexible.common.rdf.model.Values;
+
+import org.openrdf.model.IRI;
+
 import org.openrdf.model.Resource
 import org.openrdf.model.Value
-import org.openrdf.model.impl.LiteralImpl
-import org.openrdf.model.impl.StatementImpl
-import org.openrdf.model.impl.URIImpl
-import org.openrdf.model.impl.ValueFactoryImpl
 import org.openrdf.query.TupleQueryResult
 
 import groovy.util.logging.*
@@ -284,13 +286,13 @@ class Stardog {
 							def p = arr2[1]
 							def o = arr2[2]
 							if (o.class == java.net.URI.class) {
-								statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString())))
+								statements.add(Values.statement(Values.iri(s), Values.iri(p), Values.iri(o.toString())))
 							}
 							else if (o.class == java.lang.String.class) {
-								statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new LiteralImpl(o)))
+								statements.add(Values.statement(Values.iri(s), Values.iri(p), Values.literal(o)))
 							}
 							else {
-								statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), o))
+								statements.add(Values.statement(Values.iri(s), Values.iri(p), o))
 							}
 						}
 					}
@@ -300,17 +302,19 @@ class Stardog {
 						def p = arr[1]
 						def o = arr[2]
 						if (o.class == java.net.URI.class) {
-							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new URIImpl(o.toString())))
+							statements.add(Values.statement(Values.iri(s), Values.iri(p), Values.iri(o.toString())))
 						} else if (o.class == java.lang.String.class) {
-							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), new LiteralImpl(o)))
+							statements.add(Values.statement(Values.iri(s), Values.iri(p), Values.literal(o)))
 						} else {
-							statements.add(new StatementImpl(new URIImpl(s), new URIImpl(p), o))
+							statements.add(Values.statement(Values.iri(s), Values.iri(p), o))
 						}
 					}
 				}
 			}
 			con.begin()
-			con.add().graph(Models2.newModel(statements))
+			statements.each { s ->
+				con.add().statement(s)
+			}
 			con.commit()
 
 		} catch (Exception e) {
@@ -334,15 +338,15 @@ class Stardog {
 		def object = args[2]
 		def graphUri = args[3]
 
-		URIImpl subjectResource = null
-		URIImpl predicateResource = null
+		IRI subjectResource = null
+		IRI predicateResource = null
 		Resource context = null
 
 		if (subject != null) {
-			subjectResource = new URIImpl(subject)
+			subjectResource = Values.iri(subject)
 		}
 		if (predicate != null) {
-			predicateResource = new URIImpl(predicate)
+			predicateResource = Values.iri(predicate)
 		}
 
 		if (graphUri != null) {
@@ -352,7 +356,7 @@ class Stardog {
 		Value objectValue = null
 		if (object != null) {
 			if (object.class == java.net.URI.class) {
-				objectValue = new URIImpl(object.toString())
+				objectValue = Values.iri(object.toString())
 			}
 			else {
 				objectValue = TypeConverter.asLiteral(object)

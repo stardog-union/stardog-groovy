@@ -2,7 +2,7 @@ Stardog Groovy
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **5.0.2**_ 
+_Current Version **5.3.5**_ 
 
 Stardog Groovy - Groovy language bindings to use to develop apps with the [Stardog Graph / RDF Database](http://stardog.com).  
 
@@ -19,6 +19,16 @@ This bindings provides a set of idiomatic Groovy APIs for interacting with the S
 3. Make sure your build prioritizes your local Maven repository (i.e. `~/.m2/repository`), where the core Stardog binaries were installed by step 2
 4. Enjoy!
 
+## Quickstart
+
+```
+@Grab('com.complexible.stardog:stardog-groovy:5.3.5')
+import com.complexible.stardog.ext.groovy.Stardog
+
+def stardog = new Stardog(url: "http://localhost:5820", to:"testdb", username: "admin", password:"admin", reasoning: true)
+
+stardog.query("select ?s ?p ?o where { ?s ?p ?o } limit 2", { println it })
+```
 
 ## Examples ##
 

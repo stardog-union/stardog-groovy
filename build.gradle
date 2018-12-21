@@ -6,6 +6,20 @@ apply plugin: 'signing'
 group = 'com.complexible.stardog'
 version = '5.3.5'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
+ 
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+
+
 repositories {
 	maven {
 		url "http://maven.stardog.com"

@@ -19,6 +19,8 @@ This bindings provides a set of idiomatic Groovy APIs for interacting with the S
 3. Make sure your build prioritizes your local Maven repository (i.e. `~/.m2/repository`), where the core Stardog binaries were installed by step 2
 4. Enjoy!
 
+There is also a `shadowJar` task available via the Shadow plugin to produce a fatjar with all of the Stardog dependencies.
+
 ## Quickstart
 
 ```
@@ -94,8 +96,8 @@ This framework is in continuous development, please check the [issues](https://g
 
 ## License
 
+Copyright 2015 - 2018 Stardog Union
 Copyright 2012 - 2015 Clark & Parsia, LLC
-
 Copyright 2012 Al Baker
 
 Licensed under the Apache License, Version 2.0 (the "License");

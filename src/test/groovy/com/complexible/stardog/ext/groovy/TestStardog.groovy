@@ -21,8 +21,11 @@ import com.complexible.stardog.api.SelectQuery
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openrdf.query.TupleQueryResult
-import org.openrdf.model.impl.CalendarLiteral;
+import com.stardog.stark.*;
+import com.complexible.stardog.api.*;
+import com.stardog.stark.query.QueryExecutionFailure;
+import com.stardog.stark.query.GraphQueryResult;
+import com.stardog.stark.query.SelectQueryResult;
 
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -60,7 +63,7 @@ SELECT ?s ?p ?o
   ?s ?p ?o
 }
 			"""
-			TupleQueryResult result = null;
+			SelectQueryResult result = null;
 			try {
 				SelectQuery query = con.select(queryString);
 				result = query.execute();
@@ -151,9 +154,9 @@ SELECT ?s ?p ?o
 	//	gc.setTimeInMillis(time.getTime());
 		DatatypeFactory df = DatatypeFactory.newInstance();
 		XMLGregorianCalendar xc = df.newXMLGregorianCalendar (gc);
-		def d = new CalendarLiteral(xc)
+		def calLiteral =  Values.literal(xc);
 
-		stardog.insert(["urn:test3", "urn:test:predicate", d])
+		stardog.insert(["urn:test3", "urn:test:predicate", calLiteral])
 
 	}
 	

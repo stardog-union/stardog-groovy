@@ -16,8 +16,7 @@
 
 package com.complexible.stardog.ext.groovy
 
-import com.complexible.common.rdf.model.Values
-import org.openrdf.model.Value
+import com.stardog.stark.*;
 
 import javax.xml.datatype.DatatypeConfigurationException
 import javax.xml.datatype.DatatypeFactory

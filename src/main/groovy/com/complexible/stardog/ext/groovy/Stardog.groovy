@@ -15,19 +15,16 @@
  */
 package com.complexible.stardog.ext.groovy
 
-import com.complexible.common.openrdf.model.Models2
-import com.complexible.stardog.api.*
+
+import com.complexible.stardog.Contexts;
 import com.complexible.stardog.StardogException;
+import com.complexible.stardog.api.*;
 
-import com.complexible.common.openrdf.model.ModelIO;
-import com.complexible.common.openrdf.model.Models2;
-import com.complexible.common.rdf.model.Values;
+import com.stardog.stark.*;
+import com.stardog.stark.query.QueryExecutionFailure;
+import com.stardog.stark.query.GraphQueryResult;
+import com.stardog.stark.query.SelectQueryResult;
 
-import org.openrdf.model.IRI;
-
-import org.openrdf.model.Resource
-import org.openrdf.model.Value
-import org.openrdf.query.TupleQueryResult
 
 import groovy.util.logging.*
 
@@ -159,7 +156,7 @@ class Stardog {
 	 */
 	public void query(String queryString, Map args, Closure c) {
 		Connection con = getConnection()
-		TupleQueryResult result = null
+		SelectQueryResult result = null
 		try {
 			SelectQuery query = con.select(queryString)
 			
@@ -220,13 +217,13 @@ class Stardog {
 	 */
 	public void each(String queryString, Closure c) {
 		Connection con = getConnection()
-		TupleQueryResult result = null
+		SelectQueryResult result = null
 		try {
 			SelectQuery query = con.select(queryString)
 			result = query.execute()
 			while (result.hasNext()) {
 				def input = result.next().iterator().collectEntries( {
-					[ (it.getName()) : (it.getValue()) ]
+					[ (it.name()) : (it.value()) ]
 				})
 				//println "Stardog.each(): input = ${input}"
 				// binds the Sesame result set as a map into the closure so SPARQL variables
